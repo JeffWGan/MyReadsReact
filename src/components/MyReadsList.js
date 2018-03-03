@@ -55,8 +55,8 @@ class MyReadsList extends Component {
 
                                     <select onChange={(event) => this.onShelfChanged(filteredBook, event)} value={filteredBook.shelf}>
                                         <option value="nothing" disabled>Move to...</option>
-                                        {MyReadsShelves.enumValues.map((option) => (
-                                            <option key={option.value} value={option.value}>{option.description}</option>
+                                        {MyReadsShelves.enumValues.map(({value, description}) => (
+                                            <option key={value} value={value}>{description}</option>
                                             ))
                                         }
                                         
