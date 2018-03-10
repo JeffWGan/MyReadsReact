@@ -2,25 +2,13 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import MyReadsBook from './MyReadsBook';
 import MyReadsShelves from '../enums/MyReadsShelves';
-import escapeRegExp from 'escape-string-regexp'
 
 class MyReadsList extends Component {
     static propTypes = {
         books: PropTypes.array.isRequired
-        // , shelves: PropTypes.array.isRequired
     }
     
     state = {
-    query: '',
-    currentShelf: MyReadsShelves.CURRENTLY_READING.value
-    }
-
-    updateQuery = (query) => {
-    this.setState({ query: query.trim() })
-    }
-
-    clearQuery = () => {
-    this.setState({ query: '' })
     }
 
     onShelfChanged = (book, event) => {
@@ -30,8 +18,7 @@ class MyReadsList extends Component {
 
       render() {
           const { books } = this.props
-          const { query, currentShelf } = this.state
-
+          
           let showingShelves = MyReadsShelves.enumValues
           
           return (
@@ -48,24 +35,10 @@ class MyReadsList extends Component {
                                 .map((filteredBook) => (
                                 <li key={filteredBook.title}>
                                 
-                                <div className="book">
-                                <div className="book-top">
-                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${filteredBook.imageLinks.smallThumbnail})` }}></div>
-                                    <div className="book-shelf-changer">
-
-                                    <select onChange={(event) => this.onShelfChanged(filteredBook, event)} value={filteredBook.shelf}>
-                                        <option value="nothing" disabled>Move to...</option>
-                                        {MyReadsShelves.enumValues.map(({value, description}) => (
-                                            <option key={value} value={value}>{description}</option>
-                                            ))
-                                        }
-                                        
-                                    </select>
-                                    </div>
-                                </div>
-                                <div className="book-title">{filteredBook.title}</div>
-                                <div className="book-authors">{filteredBook.authors}</div>
-                                </div>
+                                <MyReadsBook
+                                    book={filteredBook}
+                                    onShelfChanged={this.onShelfChanged}
+                                />
                                 </li>
                             ))}
                             {/* end of book filter */}

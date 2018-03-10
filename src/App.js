@@ -1,9 +1,7 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import MyReadsBook from './components/MyReadsBook';
 import MyReadsList from './components/MyReadsList';
-import MyReadsShelves from './enums/MyReadsShelves';
 import MyReadsSearchResults from './components/MyReadsSearchResults';
 import { Route } from 'react-router-dom'
 import { Link } from 'react-router-dom'
@@ -41,7 +39,6 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route path='/search' render={({ history }) => (
             <MyReadsSearchResults
-            showingBooks={this.state.books}
             onShelfUpdate={(book, shelf) => {
               this.onShelfChanged(book, shelf)
             }}
