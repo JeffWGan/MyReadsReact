@@ -11,8 +11,12 @@ class MyReadsSearchResults extends Component {
 
     updateQuery = (query) => {
         this.setState({ query: query.trim() })
-        BooksAPI.search(query.trim()).then((books) => {
+        BooksAPI.search(query.trim())
+        .then((books) => {
             this.setState({ searchResult: books })
+        })
+        .catch(function(error) {
+            console.log("oops "+error);
         })
     }
 
@@ -66,14 +70,15 @@ class MyReadsSearchResults extends Component {
                         <div className="bookshelf-books">
                             <ol className="books-grid">
 
-                                {searchResult.map((filteredBook) => (
-                                    <li key={filteredBook.title}>
+                                {searchResult !== undefined && searchResult.map !== undefined && searchResult.map((filteredBook) => (
+                                    <li key={filteredBook.id}>
                                         <MyReadsBook
                                         book={filteredBook}
                                         onShelfChanged={this.onShelfChanged}
                                         />
                                     </li>
                                 ))}
+                                
                                 {/* end of book filter */}
                             </ol>
                         </div>
