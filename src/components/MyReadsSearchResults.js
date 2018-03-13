@@ -2,8 +2,14 @@ import React, {Component} from 'react'
 import MyReadsBook from './MyReadsBook';
 import { Link } from 'react-router-dom'
 import * as BooksAPI from '.././BooksAPI'
+import MyReadsShelves from '../enums/MyReadsShelves';
+import PropTypes from 'prop-types'
 
 class MyReadsSearchResults extends Component {
+    static propTypes = {
+        booksOnShelves: PropTypes.array.isRequired
+    }
+
     state = {
         query: ''
         , searchResult: []
@@ -13,7 +19,24 @@ class MyReadsSearchResults extends Component {
         this.setState({ query: query.trim() })
         BooksAPI.search(query.trim())
         .then((books) => {
-            this.setState({ searchResult: books })
+            const filtered = books.map((book) => {
+                
+                if (book.shelf === null) {
+                    book.shelf = MyReadsShelves.NONE.value 
+                }  
+
+                for (var bookOnShelf of this.props.booksOnShelves) {
+                    if (book.id === bookOnShelf.id) {
+                        book = bookOnShelf
+                        break
+                    }
+                }
+                
+                return book
+
+            }) 
+
+            this.setState({ searchResult: filtered})
         })
         .catch(function(error) {
             console.log("oops "+error);
@@ -31,6 +54,7 @@ class MyReadsSearchResults extends Component {
 
     render() {
         const { query, searchResult } = this.state
+
         
         return (
 
